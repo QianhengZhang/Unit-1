@@ -2,7 +2,7 @@
 
 // Population Dataset
 var cityPop = [
-	{ 
+	{
 		city: 'Madison',
 		population: 233209
 	},
@@ -26,7 +26,7 @@ var cityPop = [
 	end of each row of the table.
 */
 function addColumns(cityPop){
-    
+
     document.querySelectorAll("tr").forEach(function(row, i){
 
     	if (i == 0){
@@ -57,7 +57,7 @@ function addColumns(cityPop){
 function addEvents(){
 
 	document.querySelector("table").addEventListener("mouseover", function(){
-		
+
 		var color = "rgb(";
 
 		for (var i=0; i<3; i++){
@@ -68,7 +68,7 @@ function addEvents(){
 
 			if (i<2){
 				color += ", ";
-			
+
 			} else {
 				color += ")";
 			};
@@ -111,8 +111,25 @@ function addTable() {
 function initialize() {
 	addTable();
 	addColumns(cityPop);
+	debugAjax()
 	addEvents();
 }
 
 // Initialize all DOM content prepared
 document.addEventListener('DOMContentLoaded',initialize)
+
+function debugCallback(response){
+	console.log(response) // Print the object to the console
+};
+function debugAjax(){
+	var myData;
+	fetch("data/MegaCities.geojson") // load geojson
+		.then(function(response){
+				myData = response.json(); // convert response to json object
+				return myData; //return the json file for web use
+			})
+			.then(function(myData){
+				document.querySelector("#mydiv").insertAdjacentHTML('beforeend', '<br>GeoJSON data:<br>' + JSON.stringify(myData)) // add to context on the map
+				debugCallback(myData) // Callback
+			})
+};
